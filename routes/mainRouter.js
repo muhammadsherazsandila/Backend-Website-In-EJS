@@ -9,7 +9,7 @@ const removeCookie = require('../utils/removeCookie');
 const cartModel = require('../models/cartModel');
 mainRouter.get("/" , async ( req , res )=>{
     let products = await productsModel.find();
-    res.render("home" , {products})
+    res.render("home.ejs" , {products})
 })
 
 mainRouter.get("/logedInUser" , userAuthenticator, async ( req , res )=>{
@@ -17,24 +17,24 @@ mainRouter.get("/logedInUser" , userAuthenticator, async ( req , res )=>{
     let user = await usersModel.findOne({_id : id});
     const owner = await ownerModel.findOne({email : "msd.sheraz046@gmail.com"}).populate("products")
     let error = req.flash("error");
-    res.render("logedInUser" , {user , owner , error})
+    res.render("logedInUser.ejs" , {user , owner , error})
 })
 
 mainRouter.get("/loginRegister" , ( req , res )=>{
     let error = req.flash("error")
-    res.render("loginRegister" , {error})
+    res.render("loginRegister.ejs" , {error})
 })
 
 mainRouter.get("/ownerLogin" , ( req , res )=>{
     let error = req.flash("error")
-    res.render("ownerLogin" , {error})
+    res.render("ownerLogin.ejs" , {error})
 })
 
 mainRouter.get("/adminPannel" , ownerAuthenticator, async ( req , res )=>{
     let id = req.owner.id;
     let owner = await ownerModel.findOne({_id : id }).populate('products')
     let error = req.flash("error")
-    res.render("admin" , {owner , error})
+    res.render("admin.ejs" , {owner , error})
 })
 
 mainRouter.get("/editProduct/:productId" , ownerAuthenticator , async ( req , res )=>{
@@ -42,14 +42,14 @@ mainRouter.get("/editProduct/:productId" , ownerAuthenticator , async ( req , re
     let owner = await ownerModel.findOne({_id : id});
     let productId = req.params.productId;
     let product = await productsModel.findOne({_id : productId});
-    res.render("editProducts" , {owner , product});
+    res.render("editProducts.ejs" , {owner , product});
 })
 
 mainRouter.get("/cart" , userAuthenticator , async ( req , res )=>{
     let id = req.user.id;
     let user = await usersModel.findOne({_id : id})
     let cartArray = await cartModel.find({userId : id})
-    res.render("cart" , {cartArray , user})
+    res.render("cart.ejs" , {cartArray , user})
 })
 
 
