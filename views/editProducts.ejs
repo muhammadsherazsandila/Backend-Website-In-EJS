@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Products</title>
+    <link rel="stylesheet" href="../styleSheets/index.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body>
+
+    <!-- Main Content Section -->
+    <div class="flex-1 p-10">
+        <!-- Admin Profile & Welcome Section -->
+        <div class="flex products-center justify-between mb-10">
+            <div>
+                <h2 class="text-3xl font-semibold text-gray-800">
+                    <%= owner.fullName%> You Can Edit Your Product!
+                </h2>
+                <p class="text-lg text-gray-600">Manage your products and settings here.</p>
+            </div>
+        </div>
+
+        <!-- Product Management Section -->
+        <section id="productSection" class="bg-white p-6 rounded-lg shadow-lg mb-10">
+            <h3 class="text-2xl font-semibold text-gray-800 mb-6">Manage Products</h3>
+
+            <!-- Add Product Form -->
+            <form action="/products/editProduct/<%= product._id%>" method="POST" enctype="multipart/form-data" class="w-full d-flex justify-between">
+                <div class="w-1/2 space-y-6">
+                    <div>
+                        <label for="productName" class="block text-gray-700">Product Name</label>
+                        <input class="w-1/2 p-1" type="text" id="productName" name="productName"
+                            placeholder="Enter product name" value="<%= product.productName %>" required>
+                    </div>
+                    <div>
+                        <label for="productDescription" class="block text-gray-700">Price</label>
+                        <input class="w-1/2 p-1" type="text" id="productName" name="price"
+                            placeholder="Enter product prcice" value="<%= product.productPrice %>" required>
+                    </div>
+
+                    <div>
+                        <label for="productImage" class="block text-gray-700">Product Image</label>
+                        <input type="file" id="productImage" name="productImage" required>
+                    </div>
+
+                    <div>
+                        <label for="panelColor" class="block text-gray-700">Panel Color</label>
+                        <input type="text" class="w-1/2 p-1" id="panelColor" name="panelColor" value="<%= product.panelColor %>"
+                            required>
+                    </div>
+
+                    <div>
+                        <label for="textColor" class="block text-gray-700">Text Color</label>
+                        <input type="text" class="w-1/2 p-1" id="textColor" name="textColor" value="<%= product.textColor %>" required>
+                    </div>
+
+                    <div class="flex justify-between">
+                        <button type="submit"
+                            class="bg-gray-600 text-white py-2 px-6 rounded-md hover:bg-gray-700">Submit
+                            Product</button>
+                    </div>
+                </div>
+
+                <!-- Product Cards -->
+                <div class="card rounded" style="width: 18rem;">
+                    <img src="data:<%= product.productPic.mimetype %>;base64,<%= product.productPic.toString('base64') %>" class="card-img-top" alt="...">
+                    <div class="card-body bg-[<%= product.panelColor%>]">
+                        <strong class="card-title text-[<%=product.textColor%>]">
+                            <%=product.productName%>
+                        </strong>
+                        <p class="card-text text-[<%=product.textColor%>]">
+                            <%= product.productPrice %>
+                        </p>
+                    </div>
+                </div>
+
+            </form>
+        </section>
+    </div>
+</body>
+
+</html>

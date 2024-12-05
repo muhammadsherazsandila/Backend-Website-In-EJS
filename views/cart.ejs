@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Cart Page</title>
+</head>
+
+<body class="bg-gray-100 ">
+
+  <!-- Header Section -->
+  <header class="bg-gradient-to-r from-indigo-500 to-blue-500 text-white">
+    <div class="container mx-auto px-6 py-8">
+      <div class="flex items-center justify-between">
+        <div class="text-2xl font-bold">My Company</div>
+        <nav class="space-x-4">
+          <a href="logedInUser" class="hover:text-gray-200">Home</a>
+          <a href="/logout" class="hover:text-gray-200">About</a>
+          <a href="/loginRegister" class="bg-white text-blue-500 px-4 py-2 rounded-md hover:bg-gray-100">Logout</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+  <div class="max-w-4xl w-full bg-gray-200 shadow-lg rounded-lg p-6 d-block mx-auto mt-10">
+    <h1 class="text-2xl font-bold text-gray-800 mb-4">Shopping Cart</h1>
+
+    <!-- Cart Items -->
+    <div class="space-y-4 overflow-auto max-h-72 bg-white rounded p-6">
+      <!-- Single Product -->
+      <% if (cartArray.length> 0) { %>
+        <% cartArray.reverse().forEach((item)=> { %>
+          <div class="flex items-center justify-between border-b-2 pb-4">
+            <div class="flex items-center space-x-4">
+              <img src="data:<%= item.productPic.mimetype %>;base64,<%= item.productPic.toString('base64') %>"
+                alt="Product 1" class="w-20 h-20 rounded-md">
+              <div>
+                <h2 class="text-lg font-semibold text-gray-800">
+                  <%= item.productName%>
+                </h2>
+                <p class="text-gray-600">
+                  Rs.<%= item.productsPrices%>-/
+                </p>
+              </div>
+            </div>
+            <div class="flex justify-between w-1/6 items-center">
+              <button
+                class="w-6 h-6 bg-gray-400 hover:bg-gray-500 text-white rounded-full flex items-center justify-center">
+                <!-- Icon or text inside the button -->
+                <a href="/products/minimizeNo/<%= item._id%>" class="text-xl">-</a>
+              </button>
+              <button class="w-8 h-8 bg-gray-400 hover:bg-gray-500 text-white flex items-center justify-center">
+                <!-- Icon or text inside the button -->
+                <span class="text-xl">
+                  <%= item.numberOfProducts %>
+                </span>
+              </button>
+              <button
+                class="w-6 h-6 bg-gray-400 hover:bg-gray-500 text-white rounded-full flex items-center justify-center">
+                <!-- Icon or text inside the button -->
+                <a href="/products/addNo/<%= item._id%>" class="text-xl">+</a>
+              </button>
+            </div>
+
+            <a href="/products/removeProduct/<%=item._id%>" class="text-red-500 hover:text-red-700">Remove</a>
+          </div>
+          <% }); %>
+            <% } else { %>
+              <p>No Products Yet.</p>
+              <% } %>
+    </div>
+
+    <!-- Checkout Section -->
+    <div class="flex justify-between ">
+      <div class="flex justify-start mt-6">
+        <% if(cartArray.length> 0){%>
+          <strong>Total : Rs.<%= user.totalCartPrice%>-/
+          </strong>
+          <%} %>
+      </div>
+      <div class="mt-6 flex justify-end">
+        <button class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600">
+          Proceed to Checkout
+        </button>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

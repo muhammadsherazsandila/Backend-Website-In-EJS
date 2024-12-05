@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="../styleSheets/index.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100">
+    <% if (error.length> 0) { %>
+        <div class="absolute top-5 left-1/2 -translate-x-1/2 -translate-y-1/2 p-3 rounded-md bg-red-500">
+            <span class="inline-block mt-1 mb-1 text-white">
+                <%= error %>
+            </span>
+        </div>
+        <% } %>
+
+            <!-- Sidebar Section -->
+            <div class="flex">
+                <div class="w-64 bg-gray-900 p-6 h-screen text-white">
+                    <div class="mb-6">
+                        <img src="data:<%= owner.profilePic.mimetype %>;base64,<%= owner.profilePic.toString('base64') %>" alt="Admin Profile"
+                            class="w-16 h-16 rounded-full mx-auto mb-4" id="profilePic">
+                        <form action="/owner/upload/profilePic" id="profilePicForm"
+                            class="absolute left-0 bg-white text-black rounded h-[60px]" method="post"
+                            enctype="multipart/form-data">
+                            <span id="crossButton" class="absolute bottom-0 right-0 p-1 bg-black text-white text-sm rounded-full h-[20px] w-[20px] flex justify-center items-center cursor-pointer">x</span>
+                            <input type="file" name="image" required>
+                            <button id="uploadButton" class="bg-slate-950 p-1 rounded mt-1 text-white">Upload</button>
+                        </form>
+                        <!-- Hidden Form -->
+                        <h2 class="text-center text-2xl font-semibold">
+                            <%=owner.fullName%>
+                        </h2>
+                        <p class="text-center text-sm">Administrator</p>
+                    </div>
+                    <nav class="mt-8">
+                        <ul>
+                            <li><a href="#" class="block py-2 px-4 text-white hover:bg-blue-700 rounded">Dashboard</a>
+                            </li>
+                            <li><a href="#productSection"
+                                    class="block py-2 px-4 text-white hover:bg-blue-700 rounded">Products</a></li>
+                            <li><a href="#settings"
+                                    class="block py-2 px-4 text-white hover:bg-blue-700 rounded">Settings</a>
+                            </li>
+                            <li><a href="#logout"
+                                    class="block py-2 px-4 text-white hover:bg-blue-700 rounded">Logout</a></li>
+                        </ul>
+                    </nav>
+                </div>
+
+                <!-- Main Content Section -->
+                <div class="flex-1 p-10">
+                    <!-- Admin Profile & Welcome Section -->
+                    <div class="flex items-center justify-between mb-10">
+                        <div>
+                            <h2 class="text-3xl font-semibold text-gray-800">Welcome, <%= owner.fullName%>!</h2>
+                            <p class="text-lg text-gray-600">Manage your products and settings here.</p>
+                        </div>
+                    </div>
+
+                    <!-- Product Management Section -->
+                    <section id="productSection" class="bg-white p-6 rounded-lg shadow-lg mb-10">
+                        <h3 class="text-2xl font-semibold text-gray-800 mb-6">Manage Products</h3>
+
+                        <!-- Add Product Form -->
+                        <form action="/products/createProduct" method="POST" enctype="multipart/form-data"
+                            class="space-y-6 w-full">
+                            <div>
+                                <label for="productName" class="block text-gray-700">Product Name</label>
+                                <input class="w-1/2 p-1" type="text" id="productName" name="productName"
+                                    placeholder="Enter product name" required>
+                            </div>
+                            <div>
+                                <label for="productDescription" class="block text-gray-700">Price</label>
+                                <input class="w-1/2 p-1" type="text" id="productName" name="productPrice"
+                                    placeholder="Enter product prcice" required>
+                            </div>
+
+                            <div>
+                                <label for="productImage" class="block text-gray-700">Product Image</label>
+                                <input type="file" id="productImage" name="productImage" required>
+                            </div>
+
+                            <div>
+                                <label for="panelColor" class="block text-gray-700">Panel Color</label>
+                                <input class="w-1/2 p-1"  type="text" id="panelColor" name="panelColor" placeholder="Panel Color" required>
+                            </div>
+
+                            <div>
+                                <label for="textColor" class="block text-gray-700">Text Color</label>
+                                <input class="w-1/2 p-1"  type="text" id="textColor" name="textColor" placeholder="Text Color" required>
+                            </div>
+
+                            <div class="flex justify-end">
+                                <button type="submit"
+                                    class="bg-blue-600 text-white py-2 px-6 rounded-md hover:bg-blue-700">Add
+                                    Product</button>
+                            </div>
+                        </form>
+                    </section>
+
+
+                    <!-- View Products Section -->
+                    <section id="viewProducts" class="bg-white p-6 rounded-lg shadow-lg">
+                        <h3 class="text-2xl font-semibold text-gray-800 mb-6">All Products</h3>
+                        <div class="d-flex flex-wrap justify-evenly">
+                            <!-- Product Cards -->
+                            <% if (owner.products.length !==0) { %>
+                                <% owner.products.reverse().forEach((item)=> { %>
+                                    <div class="card rounded m-2" style="width: 18rem;">
+                                        <img src="data:<%= item.productPic.mimetype %>;base64,<%= item.productPic.toString('base64') %>" class="card-img-top" alt="...">
+                                        <div class="card-body bg-[<%= item.panelColor%>]">
+                                          <strong class="card-title text-[<%=item.textColor%>]"><%=item.productName%></strong>
+                                          <p class="card-text text-[<%=item.textColor%>]">Rs.<%= item.productPrice %>-/</p>
+                                            <div class="d-flex justify-between mt-2">
+                                                <a href="/editProduct/<%=item._id%>" class="btn btn-success text-[<%=item.textColor%>]">Edit</a>
+                                                <a href="/products/deleteProduct/<%=item._id%>" class="btn btn-primary text-[<%=item.textColor%>]">Delete</a>
+                                            </div>
+                                        </div>
+                                      </div>
+                                    <% }); %>
+
+                                        <% } else { %>
+                                            <p>No Products Yet.</p>
+                                            <% } %>
+                                                <!-- Add more product cards as needed -->
+                        </div>
+                    </section>
+                </div>
+            </div>
+</body>
+<script src="../javaScripts/index.js"></script>
+
+</html>
