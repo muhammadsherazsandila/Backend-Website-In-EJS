@@ -12,7 +12,8 @@ app.use(cookieParser());
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.set('view engine', 'ejs');
+app.set('views');
+
 
 const ownerRouter = require('./routes/ownerRouter');
 const usersRouter = require('./routes/usersRouter');
