@@ -11,3 +11,4 @@ uploadButton.addEventListener("click", () => {
 crossButton.addEventListener("click", () => {
     profilePicForm.style.top = '-15%';
 })
+
