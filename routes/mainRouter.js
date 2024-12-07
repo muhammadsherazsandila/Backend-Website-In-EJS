@@ -52,6 +52,5 @@ mainRouter.get("/cart" , userAuthenticator , async ( req , res )=>{
     res.render("cart.ejs" , {cartArray , user})
 })
 
-
 mainRouter.get("/logout" , userAuthenticator , removeCookie)
 module.exports = mainRouter;
