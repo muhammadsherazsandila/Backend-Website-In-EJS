@@ -14,13 +14,29 @@
   <header class="bg-gradient-to-r from-indigo-500 to-blue-500 text-white">
     <div class="container mx-auto px-6 py-8">
       <div class="flex items-center justify-between">
-        <div class="text-2xl font-bold">My Company</div>
-        <nav class="space-x-4">
-          <a href="logedInUser" class="hover:text-gray-200">Home</a>
-          <a href="/logout" class="hover:text-gray-200">About</a>
+        <!-- Brand Name -->
+        <div class="text-2xl font-bold">Open Bazaar</div>
+
+        <!-- Hamburger Button -->
+        <button id="hamburger-btn" class="md:hidden focus:outline-none">
+          <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+          </svg>
+        </button>
+
+        <!-- Navigation Links -->
+        <nav id="nav-menu" class="hidden md:flex space-x-4">
+          <a href="#about" class="hover:text-gray-200">About</a>
           <a href="/loginRegister" class="bg-white text-blue-500 px-4 py-2 rounded-md hover:bg-gray-100">Logout</a>
         </nav>
       </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden flex-col bg-indigo-600 overflow-hidden transition-all duration-300"
+      style="max-height: 0;">
+      <a href="#about" class="block px-6 py-2 text-white hover:bg-indigo-700">About</a>
+      <a href="/loginRegister" class="bg-white text-blue-500 px-4 py-2 rounded-md hover:bg-gray-100">Logout</a>
     </div>
   </header>
   <div class="max-w-4xl w-full bg-gray-200 shadow-lg rounded-lg p-6 d-block mx-auto mt-10">
@@ -87,5 +103,24 @@
     </div>
   </div>
 </body>
+
+<script>
+  const hamburgerBtn = document.getElementById("hamburger-btn");
+  const mobileMenu = document.getElementById("mobile-menu");
+
+  hamburgerBtn.addEventListener("click", () => {
+    if (mobileMenu.classList.contains("hidden")) {
+      // Show the menu
+      mobileMenu.classList.remove("hidden");
+      mobileMenu.style.maxHeight = mobileMenu.scrollHeight + "px";
+    } else {
+      // Hide the menu
+      mobileMenu.style.maxHeight = "0";
+      setTimeout(() => {
+        mobileMenu.classList.add("hidden");
+      }, 300); // Matches the `duration-300` in Tailwind
+    }
+  });
+</script>
 
 </html>
